@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException  } from '@nestjs/common';
 import { Product } from './../entity/product.entity';
+import { CreateProductDto, UpdateProductDto } from './../dtos/products.dtos';
+
 
 @Injectable()
 export class ProductsService {
@@ -23,11 +25,16 @@ export class ProductsService {
     
     /*Metodo para retornar un producto por id*/
     findOne(id: number){
-        return this.products.find((item) => item.id === id);
+        const product = this.products.find((item) => item.id === id);
+        if(!product){
+            //throw 'Producto no existe';
+            throw new NotFoundException(`El Producto #${id} no existe`);
+        }
+        return product;
     }
     
     /*Metodo para crear nuevos productos*/
-    create(payload: any){
+    create(payload: CreateProductDto){
         this.counterId = this.counterId + 1;
         const newProduct = {
             id: this.counterId,
@@ -38,7 +45,8 @@ export class ProductsService {
     }
     
     /*Metodo para actualizar */
-    update(id: number, payload: any) {
+    update(id: number, payload: UpdateProductDto) {
+        console.log(payload);
         //reutilizamos el metodo findOne para buscar el producto y guardarlo en la variable
         const product = this.findOne(id);
         if(product){
@@ -61,10 +69,10 @@ export class ProductsService {
     remove(id: number) {
         const index = this.products.findIndex((item) => item.id === id);
         if (index === -1) {
-            return `El producto #${id} no existe`;
-            //throw new NotFoundException(`El Producto #${id} no existe`);
+          throw new NotFoundException(`El Producto #${id} no existe`);
         } 
         this.products.splice(index, 1);
         return true;
     }
+
 }

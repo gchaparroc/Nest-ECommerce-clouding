@@ -1,6 +1,20 @@
-import { Controller, Get, Post, Put, Delete, Param, Query, Body, HttpStatus, HttpCode } from '@nestjs/common';
+import { 
+  Controller, 
+  Get, 
+  Post, 
+  Put, 
+  Delete, 
+  Param, 
+  Query, 
+  Body, 
+  HttpStatus, 
+  HttpCode, 
+  //ParseIntPipe 
+} from '@nestjs/common';
 import { response } from 'express';
 import { ProductsService } from './../services/products.service';
+import { ParseIntPipe } from './../../common/parse-int.pipe';
+import { CreateProductDto, UpdateProductDto } from './../dtos/products.dtos';
 
 @Controller('products')
 export class ProductsController {
@@ -20,8 +34,8 @@ export class ProductsController {
     //Ejemplo de Endpoint:  http://localhost:3000/products/154
     @Get(':productId')
     @HttpCode(HttpStatus.ACCEPTED)
-    getProduct(@Param('productId') productId: string) {
-        return this.productsService.findOne(+productId);
+    getProduct(@Param('productId', ParseIntPipe) productId: number) {
+        return this.productsService.findOne(productId);
     }
 
 
@@ -57,22 +71,21 @@ export class ProductsController {
     //OJO: tambien se puede especificar que atributos enviar, pero eso se va a ver ma adelante
     //Ejemplo de este Endpoint es: localhost:3000/products
     @Post()
-    create(@Body() payload: any){
+    create(@Body() payload: CreateProductDto){
       return this.productsService.create(payload);
     }
 
     //Endpoint para actualizar, es un hibrido entre Get porque recibe un id y Post porque recibe parametros por el body
     //Ejemplo de Endpoint: localhost:3000/products/14
     @Put(':id')
-    update(@Param('id') id: number, @Body() payload: any){
+    update(@Param('id') id: number, @Body() payload: UpdateProductDto){
       return this.productsService.update(+id, payload);
     }
 
     //Endpoint para eliminar un producto, es muy parecido a un Get que recibe un id
     @Delete(':id')
-    delete(@Param('id') id: number){
-      return{
-        id
-      };
+    delete(@Param('id', ParseIntPipe) id: number){
+      return this.productsService.remove(id);
     }
+
 }
