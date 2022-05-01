@@ -1,0 +1,33 @@
+
+
+PRODUCTS
+	PRODUCTS
+		id: number
+		name: string 
+		description: string
+		price: number
+		stock: number
+		image: string		
+	BRANDS
+		id: number
+		name: string
+		image: string
+	CATEGORIES
+		id: number
+		name: string
+		description: string
+		codigo: number
+
+USERS
+	USERS
+		id: number
+		email: string
+		password: string
+		role: string
+	CUSTOMERS
+		id: number
+		name: string
+		lastname: string
+		phone: string
+		
+
