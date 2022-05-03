@@ -15,7 +15,9 @@ import { response } from 'express';
 import { ProductsService } from './../services/products.service';
 import { ParseIntPipe } from './../../common/parse-int.pipe';
 import { CreateProductDto, UpdateProductDto } from './../dtos/products.dtos';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
+@ApiTags('products')
 @Controller('products')
 export class ProductsController {
     
@@ -24,6 +26,7 @@ export class ProductsController {
     //Endpoint para retornar todos los productos
     //Ejemplo de Endpoint:   http://localhost:3000/products
     @Get()
+    @ApiOperation({summary: 'Lista de todos los productos'})
     getProducts(
     ) {
         return this.productsService.findAll();
@@ -33,6 +36,7 @@ export class ProductsController {
     //Con el payload ya podemos hacer pruebas en Postman enviando parametros desde el body
     //Ejemplo de Endpoint:  http://localhost:3000/products/154
     @Get(':productId')
+    @ApiOperation({summary: 'Busqueda de producto por Id'})
     @HttpCode(HttpStatus.ACCEPTED)
     getProduct(@Param('productId', ParseIntPipe) productId: number) {
         return this.productsService.findOne(productId);
@@ -71,6 +75,7 @@ export class ProductsController {
     //OJO: tambien se puede especificar que atributos enviar, pero eso se va a ver ma adelante
     //Ejemplo de este Endpoint es: localhost:3000/products
     @Post()
+    @ApiOperation({summary: 'Crear nuevo producto'})
     create(@Body() payload: CreateProductDto){
       return this.productsService.create(payload);
     }

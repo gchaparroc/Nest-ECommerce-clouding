@@ -15,7 +15,9 @@ import { response } from 'express';
 import { BrandsService } from './../services/brands.service';
 import { ParseIntPipe } from './../../common/parse-int.pipe';
 import { CreateBrandDto } from './../dtos/brands.dtos';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('brands')
 @Controller('brands')
 export class BrandsController {
     

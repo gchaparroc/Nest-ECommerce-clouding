@@ -15,7 +15,9 @@ import { response } from 'express';
 import { CategoriesService } from './../services/categories.service';
 import { ParseIntPipe } from './../../common/parse-int.pipe';
 import { CreateCategoryDto } from './../dtos/categories.dtos';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('categories')
 @Controller('categories')
 export class CategoriesController {
     
